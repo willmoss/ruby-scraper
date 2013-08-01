@@ -10,7 +10,7 @@ require 'debugger'
 
 class Scraper
   def initialize
-    @plugins = '/Users/willmoss26/Documents/ruby/ruby-scraper/plugins/' # change this to your 'plugins' directory
+    @plugins = '/Users/willmoss26/Documents/ruby/sigads/sigads/lib/plugins' # change this to your 'plugins' directory
   end
   def run
     
@@ -38,26 +38,6 @@ class Scraper
         # start
         thisPlugin.start
         
-        # get data
-        rates = thisPlugin.rates
-        
-        # put to database
-        # only update if rate pair is in DB
-        rates.each do |pair,value|
-          
-          if Location.exists?(:key => thisPlugin.key) then
-            
-            condition = Rate.where(:location_id => Location.find_by_key(thisPlugin.key).id, :pair => pair)
-          
-            if condition.any? then
-              newRate = Rate.update(condition.first.id, { :value => value })
-              #debugger
-              puts "- " + pair
-            end
-          
-          end
-        end
-      
       rescue => e
         
         p e.message
